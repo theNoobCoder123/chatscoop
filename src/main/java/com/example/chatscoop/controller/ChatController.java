@@ -9,9 +9,11 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.example.chatscoop.model.ChatMessage;
-import com.example.chatscoop.model.ChatNotification;
 import com.example.chatscoop.model.ChatMessage.MessageStatus;
-import com.example.chatscoop.service.ChatRoomService;
+import com.example.chatscoop.model.Notification.NotificationType;
+import com.example.chatscoop.repository.ChatMessageRepository;
+import com.example.chatscoop.model.ChatNotification;
+import com.example.chatscoop.model.Notification;
 
 @Controller
 public class ChatController {
@@ -20,17 +22,45 @@ public class ChatController {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    @Autowired
+    private ChatMessageRepository chatMessageRepository;
+
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
-        String chatId = ChatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId());
-        chatMessage.setChatId(chatId);
+        chatMessage.setId("1"); // TODO: Change to using twitter's service.
         chatMessage.setStatus(MessageStatus.SENT);
+        ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
-        logger.info("dgdkgjdshkgsdgksjdhgksdg");
+        logger.info(savedMessage.toString());
 
-        messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/queue/messages", new ChatNotification(
-                chatMessage.getId(),
-                chatMessage.getSenderId(),
-                chatMessage.getSenderName()));
+        messagingTemplate.convertAndSendToUser(
+                savedMessage.getSenderId(),
+                "/queue/messages",
+                new Notification(
+                        savedMessage.getId(),
+                        savedMessage.getSenderId(),
+                        savedMessage.getRecipientId(),
+                        NotificationType.SENT_RECEIPT));
+
+        boolean recipientOnline = true; // TODO: Update this variable to use real session status.
+        if (recipientOnline) {
+            messagingTemplate.convertAndSendToUser(
+                    savedMessage.getRecipientId(),
+                    "/queue/messages",
+                    new ChatNotification(
+                            savedMessage.getId(),
+                            savedMessage.getSenderId(),
+                            savedMessage.getRecipientId(),
+                            savedMessage.getSenderName()));
+
+            messagingTemplate.convertAndSendToUser(
+                    savedMessage.getSenderId(),
+                    "/queue/messages",
+                    new Notification(
+                            savedMessage.getId(),
+                            savedMessage.getSenderId(),
+                            savedMessage.getRecipientId(),
+                            NotificationType.READ_RECEIPT));
+        }
     }
 }
