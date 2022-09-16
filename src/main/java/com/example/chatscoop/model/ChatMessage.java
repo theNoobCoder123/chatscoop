@@ -9,8 +9,8 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 import lombok.Data;
 
-@Table(value = "messages")
 @Data
+@Table(value = "messages")
 public class ChatMessage {
 
     @PrimaryKeyColumn(name = "message_id", ordinal = 2, type = PrimaryKeyType.CLUSTERED, ordering = Ordering.DESCENDING)

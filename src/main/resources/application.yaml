@@ -1,0 +1,8 @@
+auth0:
+  audience: https://sendit.app
+spring:
+  security:
+    oauth2:
+        resourceserver:
+            jwt:
+                issuer-uri: https://chat-scoop.au.auth0.com/
