@@ -12,6 +12,7 @@ import com.example.chatscoop.model.ChatMessage;
 import com.example.chatscoop.model.ChatMessage.MessageStatus;
 import com.example.chatscoop.model.Notification.NotificationType;
 import com.example.chatscoop.repository.ChatMessageRepository;
+import com.example.chatscoop.service.ChatMessageIdService;
 import com.example.chatscoop.model.ChatNotification;
 import com.example.chatscoop.model.Notification;
 
@@ -24,11 +25,15 @@ public class ChatController {
 
     @Autowired
     private ChatMessageRepository chatMessageRepository;
+    
+    @Autowired
+    private ChatMessageIdService chatMessageIdService;
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
-        chatMessage.setId("1"); // TODO: Change to using twitter's service.
+        chatMessage.setId(chatMessageIdService.getChatId()); // TODO: Change to using twitter's service.
         chatMessage.setStatus(MessageStatus.SENT);
+        logger.info(chatMessage.toString());
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
 
         logger.info(savedMessage.toString());

@@ -1,6 +1,6 @@
 package com.example.chatscoop.repository;
 
-import java.util.List;
+// import java.util.List;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
