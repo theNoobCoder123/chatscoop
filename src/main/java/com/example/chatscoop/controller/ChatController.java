@@ -1,5 +1,8 @@
 package com.example.chatscoop.controller;
 
+import java.time.Instant;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ public class ChatController {
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
         chatMessage.setId(chatMessageIdService.getChatId()); // TODO: Change to using twitter's service.
+        chatMessage.setSentAt(Date.from(Instant.now()));
         chatMessage.setStatus(MessageStatus.SENT);
         logger.info(chatMessage.toString());
         ChatMessage savedMessage = chatMessageRepository.save(chatMessage);
