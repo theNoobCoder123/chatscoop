@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "auth0.audience",
+    "type": "java.lang.String",
+    "description": "A description for 'auth0.audience'"
+  },
+  {
+    "name": "id-generator.address",
+    "type": "java.lang.String",
+    "description": "A description for 'id-generator.address'"
+  },
+  {
+    "name": "id-generator.port",
+    "type": "java.lang.String",
+    "description": "A description for 'id-generator.port'"
+  },
+  {
+    "name": "id-generator.protocol",
+    "type": "java.lang.String",
+    "description": "A description for 'id-generator.protocol'"
+  }
+]}

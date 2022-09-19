@@ -29,7 +29,9 @@ public class ChatMessage {
     private MessageType type;
     private MessageStatus status;
 
-    private Date timestamp;
+    private Date sentAt;
+
+    private Date createdAt;
 
     public enum MessageType {
         CHAT,
@@ -55,6 +57,6 @@ public class ChatMessage {
                 "\t" + "Content :" + this.content +
                 "\t" + "Type :" + this.type +
                 "\t" + "Status :" + this.status +
-                "\t" + "Timestamp :" + this.timestamp;
+                "\t" + "Timestamp :" + this.sentAt;
     }
 }

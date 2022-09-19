@@ -10,14 +10,14 @@ public class Notification {
     private String senderId;
     private String recipientId;
     private NotificationType type;
-    private Date timestamp;
+    private Date createdAt;
 
     public Notification(String id, String senderId, String recipientId, NotificationType type) {
         this.id = id;
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.type = type;
-        this.timestamp = new Date();
+        this.createdAt = new Date();
     }
 
     public enum NotificationType {

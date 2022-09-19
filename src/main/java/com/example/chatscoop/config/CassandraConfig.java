@@ -41,6 +41,11 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     }
 
     @Override
+    public String[] getEntityBasePackages() {
+        return new String[] { "com.example.chatscoop" };
+    }
+
+    @Override
     protected String getKeyspaceName() {
         return keyspace;
     }

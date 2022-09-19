@@ -47,7 +47,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOrigins("*")
+                .setAllowedOrigins("http://localhost:4200")
                 .withSockJS()
                 .setInterceptors(new HandshakeInterceptor() {
                     @Override
@@ -63,12 +63,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
                         String authToken = getAuthToken(request);
                         attributes.put("Authorization", "Bearer " + authToken);
-                        if (authToken == null) {
-                            response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                            return false;
+                        if (!authToken.equals("null")) {
+                            //TODO: Check authToken with auth0 server.
+                            return true;
                         }
 
-                        return true;
+                        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+                        return false;
                     }
 
                     String getAuthToken(ServerHttpRequest request) {
